@@ -1,0 +1,46 @@
+.handleliste {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  text-align: center;
+  width: 100%;
+}
+
+.handlelisteHeading {
+  margin: 2px auto 2px auto;
+  text-align: center;
+}
+
+.handleliste li {
+  margin-top: 5px;
+}
+
+.handleliste input {
+  width: 180px;
+  height: 2.5rem;
+  font-size: 16px; /* Overstyrer zoom-funksjonen på mobil */
+}
+
+.handleliste button {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  color: white;
+  vertical-align: middle;
+  font-weight: bold;
+  font-size: 2rem;
+  padding: 0;
+  margin-left: 2px;
+}
+
+.createItem {
+  text-align: center;
+}
+
+.btnUpdate {
+  background: green;
+}
+
+.btnDelete {
+  background: red;
+}
