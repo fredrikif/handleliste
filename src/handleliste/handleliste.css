@@ -50,7 +50,8 @@
   text-align: center;
 }
 
-.btnUpdate {
+.btnUpdate,
+.loginForm button {
   background: green;
 }
 
