@@ -1,5 +1,4 @@
 import React from 'react'
-import './handleliste.css'
 import firebase from './firebase'
 import { ItemInput, onDeleteAll } from './ItemInput'
 

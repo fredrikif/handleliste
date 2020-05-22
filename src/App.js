@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import './App.css'
+import './handleliste/handleliste.css'
 import { AuthProvider } from './Auth'
 import Handleliste from './handleliste/Handleliste'
 import Login from './handleliste/Login'
