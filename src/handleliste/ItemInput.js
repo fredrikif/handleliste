@@ -19,18 +19,19 @@ export const ItemInput = ({ item }) => {
   return (
     <>
       <input
+        className="shadow"
         value={name}
         onChange={(e) => {
           setName(e.target.value)
         }}
       />
 
-      <button className="btnUpdate" onClick={onUpdate}>
+      <button className="btnUpdate shadow" onClick={onUpdate}>
         <span role="img" aria-label="refresh icon">
           ⟳
         </span>
       </button>
-      <button className="btnDelete" onClick={onDelete}>
+      <button className="btnDelete shadow" onClick={onDelete}>
         <span role="img" aria-label="delete icon">
           ⌫
         </span>

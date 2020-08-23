@@ -6,8 +6,18 @@
   width: 100%;
 }
 
+.shadow {
+  -webkit-appearance: none;
+  box-shadow: none;
+  border: none;
+  border: 1px solid #111;
+  border-radius: 5px;
+  box-shadow: 0 0 1px 1px #999, 0 0 2px 2px #ccc;
+  margin: 2px;
+}
+
 .handlelisteHeading {
-  margin: 2px auto 2px auto;
+  margin: 5px auto 5px auto;
   text-align: center;
 }
 
@@ -38,7 +48,6 @@
   width: 50px;
   height: 50px;
   border-radius: 25px;
-  color: white;
   vertical-align: middle;
   font-weight: bold;
   font-size: 2rem;
@@ -50,9 +59,15 @@
   text-align: center;
 }
 
+.btnDelete,
+.btnDeleteAll {
+  color: #fff;
+}
+
 .btnUpdate,
 .loginForm button {
   background: green;
+  color: #fff;
 }
 
 .btnDelete {

@@ -29,14 +29,16 @@ const Login = ({ history }) => {
   return (
     <div className="app-content">
       <h1>Log in</h1>
-      <form className="loginForm" onSubmit={handleLogin}>
+      <form className="loginForm shadow" onSubmit={handleLogin}>
         <label>
           <input name="email" type="email" placeholder="Email" />
         </label>
         <label>
           <input name="password" type="password" placeholder="Password" />
         </label>
-        <button type="submit">Log in</button>
+        <button className="shadow" type="submit">
+          Log in
+        </button>
       </form>
     </div>
   )

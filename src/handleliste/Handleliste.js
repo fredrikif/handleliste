@@ -33,15 +33,16 @@ function Handleliste() {
       <ul className="handleliste">
         <form className="createItem" onSubmit={onCreate}>
           <input
+            className="shadow"
             value={newItemName}
             onChange={(e) => setNewItemName(e.target.value)}
           />
-          <button className="btnUpdate" type="submit">
+          <button className="btnUpdate shadow" type="submit">
             <span role="img" aria-label="bacon icon">
               🥓
             </span>
           </button>
-          <button className="btnDelete" onClick={onDeleteAll}>
+          <button className="btnDelete shadow" onClick={onDeleteAll}>
             <span role="img" aria-label="warning icon">
               ⚠
             </span>
