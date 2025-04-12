@@ -1,5 +1,5 @@
 import React from 'react'
-import { ItemInput } from './ItemInput'
+import { ItemInput } from '../handleliste/ItemInput'
 import { 
   getFirestore, 
   collection, 
@@ -13,28 +13,25 @@ import {
 
 const db = getFirestore()
 
-function Handleliste() {
+function TodoList() {
   const [items, setItems] = React.useState([])
   const [newItemName, setNewItemName] = React.useState('')
   const [error, setError] = React.useState(null)
 
+  // Then simplify the query to debug
   React.useEffect(() => {
-    console.log('Setting up Firestore listener...')
-    
     try {
       const q = query(
-        collection(db, 'handleliste'),
+        collection(db, 'todolist'),
         orderBy('pinned', 'desc'),    // Sort pinned items first
         orderBy('createdAt', 'desc')  // Then by creation date
       )
 
       const unsubscribe = onSnapshot(q, 
         (snapshot) => {
-          console.log('Handleliste snapshot size:', snapshot.size) // Debug log
           const newItems = []
           snapshot.forEach((doc) => {
             const data = doc.data()
-            console.log('Handleliste document:', data) // Debug log
             newItems.push({
               ...data,
               id: doc.id
@@ -56,12 +53,12 @@ function Handleliste() {
     }
   }, [])
 
-  // When creating new items, use createdAt instead of timestamp
+  // When creating new items, use only one timestamp field
   const createItem = async (e) => {
     e.preventDefault()
     if (!newItemName.trim()) return
 
-    const newItemRef = doc(collection(db, 'handleliste'))
+    const newItemRef = doc(collection(db, 'todolist'))
     
     try {
       await setDoc(newItemRef, {
@@ -88,7 +85,7 @@ function Handleliste() {
           <input
             value={newItemName}
             onChange={(e) => setNewItemName(e.target.value)}
-            placeholder="Legg til vare..."
+            placeholder="Legg til gjøremål..."
             enterKeyHint="done"
             inputMode="text"
             autoComplete="off"
@@ -100,7 +97,7 @@ function Handleliste() {
 
         {items.map((item) => (
           <li key={item.id}>
-            <ItemInput item={item} collectionName="handleliste" />
+            <ItemInput item={item} collectionName="todolist" />
           </li>
         ))}
       </ul>
@@ -108,4 +105,4 @@ function Handleliste() {
   )
 }
 
-export default Handleliste
+export default TodoList

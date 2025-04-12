@@ -6,22 +6,29 @@ import { AuthProvider } from './Auth'
 import Handleliste from './handleliste/Handleliste'
 import Login from './Login'
 import PrivateRoute from './PrivateRoute'
+import TodoList from './todo/TodoList'
+import { Navigation } from './components/Navigation'
 
 function App() {
+  const [activePage, setActivePage] = React.useState('mat')
+
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Routes>
-          <Route 
-            path="/" 
-            element={
-              <PrivateRoute>
-                <Handleliste />
-              </PrivateRoute>
-            } 
-          />
-          <Route path="/login" element={<Login />} />
-        </Routes>
+        <div className="app-container">
+          <Navigation activePage={activePage} onNavigate={setActivePage} />
+          <Routes>
+            <Route 
+              path="/" 
+              element={
+                <PrivateRoute>
+                  {activePage === 'mat' ? <Handleliste /> : <TodoList />}
+                </PrivateRoute>
+              } 
+            />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </div>
       </BrowserRouter>
     </AuthProvider>
   )

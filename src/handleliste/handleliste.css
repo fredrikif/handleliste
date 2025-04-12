@@ -3,21 +3,25 @@
   min-height: 100vh;
   background: #ed4264;  /* fallback */
   background: radial-gradient(
-    circle at bottom right,
+    circle at center bottom,
     #ffefb5 15%,    /* Increased from 5% to 15% */
     #ffd485 25%,    /* Added warm transition color */
     #ff668f 55%,    /* Adjusted from 45% to 55% */
     #ed4264 90%
   );
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+/* Common styles for both lists */
 .handleliste {
   list-style: none;
   padding: 0;
-  margin: 0 auto;
+  margin: 0;
+  width: 100%;
   max-width: 600px;
-  width: 95%;
 }
 
 /* Heading - making it more accessible */
@@ -40,7 +44,7 @@
 .createItem {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.25rem; /* Reduced from 0.5rem to bring elements closer */
   background: white;
   opacity: 0.85; /* Increased from 0.7 for better text contrast */
   padding: 0.4rem;
@@ -50,6 +54,7 @@
               0 1px 2px rgba(0, 0, 0, 0.06);
   width: 100%;
   box-sizing: border-box;
+  transition: all 0.3s ease;
 }
 
 /* Input fields */
@@ -102,6 +107,111 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* Pin button styling */
+.btnPin {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  background: transparent;
+  opacity: 0.3; /* Changed from 0 to always show slightly */
+  transform: rotate(0deg); /* Reset default rotation */
+  border: 2px solid #ed4264; /* Add border to unpinned state */
+}
+
+/* Pinned state */
+.btnPin.active {
+  opacity: 1;
+  color: #f0f0f0;
+  transform: rotate(45deg);
+  background: rgba(255, 23, 68, 0.15);
+  border: 2px solid #f0f0f0; /* Changed to white/gray */
+}
+
+/* Add touch device specific styles */
+@media (hover: none) {
+  /* For touch devices, always show pin button with slight opacity */
+  .btnPin {
+    opacity: 0.4;
+    border: 2px solid #ed4264; /* Maintain border on touch devices */
+  }
+
+  .item-container:active .btnPin {
+    opacity: 0.6;
+  }
+
+  .btnPin:active {
+    opacity: 1;
+    background: rgba(237, 66, 100, 0.1);
+  }
+}
+
+/* Keep existing hover styles for non-touch devices */
+@media (hover: hover) {
+  .btnPin {
+    opacity: 0;
+  }
+
+  .item-container:hover .btnPin {
+    opacity: 0.3;
+  }
+
+  .item-container:hover .btnPin:hover {
+    opacity: 1;
+    background: rgba(237, 66, 100, 0.1);
+  }
+}
+
+/* Pin icon colors */
+.btnPin .material-icons-round {
+  font-size: 1.35rem;
+  color: #999; /* Subtle grey for unpinned */
+  transition: all 0.3s ease;
+  transform: rotate(0deg); /* Reset icon rotation */
+}
+
+.btnPin.active .material-icons-round {
+  color: #ff1744;
+  transform: rotate(0deg); /* Keep icon straight while button rotates */
+  filter: drop-shadow(0 0 3px rgba(255, 23, 68, 0.4)); /* Stronger glow */
+}
+
+.btnPin .material-icons-round {
+  font-size: 1.35rem;
+  color: #ed4264; /* Subtle grey for unpinned */
+  transition: color 0.3s ease;
+}
+
+.btnPin.active .material-icons-round {
+  color: #f0f0f0;
+}
+
+/* Pinned item container styling */
+.item-container.pinned {
+  background: linear-gradient(to right, rgba(255, 23, 68, 0.08), transparent);
+  border: 2px solid #f0f0f0; /* Consistent white/gray border */
+  box-shadow: 0 2px 8px rgba(255, 23, 68, 0.15);
+}
+
+/* Make pinned text more visible */
+.item-container.pinned input {
+  color: #f0f0f0; /* Dark text for better readability */
+  font-weight: 450;
+}
+
+/* Hover effects for pinned items */
+.item-container.pinned:hover {
+  background: linear-gradient(to right, rgba(255, 23, 68, 0.12), transparent);
+  border: 2px solid #f0f0f0; /* Keep same color on hover */
+  box-shadow: 0 4px 12px rgba(255, 23, 68, 0.2);
+}
+
 /* Delete animation */
 .removing {
   opacity: 0 !important;
@@ -109,11 +219,42 @@
   transition: all 0.3s ease-out !important;
 }
 
+/* Navigation styles */
+.nav-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.nav-button {
+  padding: 0.5rem 2rem;
+  border: none;
+  border-radius: 8px;
+  background: white;
+  color: #ed4264;
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 0.85;
+}
+
+.nav-button:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.nav-button.active {
+  background: linear-gradient(to right, #ffffff, #ffefb5);
+  opacity: 1;
+}
+
 /* Mobile adjustments */
 @media (max-width: 640px) {
   .handleliste,
   .createItem {
-    width: 95%;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
   }
