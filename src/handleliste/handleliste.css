@@ -1,75 +1,155 @@
+/* Base styles */
+.app-container {
+  min-height: 100vh;
+  background: #ed4264;  /* fallback */
+  background: radial-gradient(
+    circle at bottom right,
+    #ffefb5 15%,    /* Increased from 5% to 15% */
+    #ffd485 25%,    /* Added warm transition color */
+    #ff668f 55%,    /* Adjusted from 45% to 55% */
+    #ed4264 90%
+  );
+  padding: 1rem;
+}
+
 .handleliste {
-  margin: 0;
+  list-style: none;
   padding: 0;
-  list-style-type: none;
-  text-align: center;
-  width: 100%;
+  margin: 0 auto;
+  max-width: 600px;
+  width: 95%;
 }
 
-.shadow {
-  -webkit-appearance: none;
-  box-shadow: none;
-  border: none;
-  border: 1px solid #111;
-  border-radius: 5px;
-  box-shadow: 0 0 1px 1px #999, 0 0 2px 2px #ccc;
-  margin: 2px;
-}
-
+/* Heading - making it more accessible */
 .handlelisteHeading {
-  margin: 5px auto 5px auto;
-  text-align: center;
-}
-
-.handleliste li {
-  margin-top: 5px;
-}
-
-.handleliste input,
-.loginForm input {
-  width: 180px;
-  height: 2.5rem;
-  font-size: 16px; /* Overstyrer zoom-funksjonen på mobil */
-}
-
-.loginForm label {
-  display: block;
-  font-size: 16px;
-  margin: 0.5rem;
-}
-
-.loginForm button {
-  height: 3rem;
-  width: 7rem;
-  border-radius: 0.5rem;
-}
-
-.handleliste button {
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
-  vertical-align: middle;
-  font-weight: bold;
+  color: #ffffff; /* Fallback solid color */
   font-size: 2rem;
-  padding: 0;
-  margin-left: 2px;
-}
-
-.createItem {
+  font-weight: 800;
+  margin: 2.5rem 0;
   text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Increased shadow for better contrast */
+  letter-spacing: -0.5px;
+  background: linear-gradient(to right, #ffffff, #ffefb5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
+/* Common container styles - increased opacity for better contrast */
+.item-container,
+.createItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: white;
+  opacity: 0.85; /* Increased from 0.7 for better text contrast */
+  padding: 0.4rem;
+  margin: 0.6rem 0;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04),
+              0 1px 2px rgba(0, 0, 0, 0.06);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Input fields */
+.handleliste input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  background: transparent;
+  padding: 0.35rem 0.5rem;
+}
+
+/* Buttons - balanced design */
 .btnDelete,
-.btnDeleteAll {
-  color: #fff;
+.btnAdd {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.btnUpdate,
-.loginForm button {
-  background: green;
-  color: #fff;
+.btnAdd {
+  background: linear-gradient(45deg, #d81b46, #ed4264);
+  color: white;
+}
+
+.btnAdd:hover {
+  background: linear-gradient(45deg, #ed4264, #ff668f);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btnDelete {
-  background: red;
+  background: linear-gradient(45deg, #ed4264, #3fb950);  /* Success green gradient */
+  color: white;
+}
+
+.btnDelete:hover {
+  background: linear-gradient(45deg, #ed4264, #46c655);  /* Lighter green on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Delete animation */
+.removing {
+  opacity: 0 !important;
+  transform: scale(0.95) !important;
+  transition: all 0.3s ease-out !important;
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+  .handleliste,
+  .createItem {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .item-container,
+  .createItem {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .handlelisteHeading {
+    font-size: 1.75rem;
+    margin: 2.5rem 0;
+  }
+
+  .handleliste input,
+  .createItem input {
+    width: 100%;
+    flex: 1;
+  }
+}
+
+/* Icon size */
+.material-icons-round {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

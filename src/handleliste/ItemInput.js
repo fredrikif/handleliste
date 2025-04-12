@@ -1,55 +1,60 @@
-import React from 'react'
-import firebase from './firebase'
+import React, { useCallback } from 'react'
+import { db } from './firebase'
+import { deleteDoc, doc, setDoc } from 'firebase/firestore'
 
 export const ItemInput = ({ item }) => {
   const [name, setName] = React.useState(item.name)
+  const [isDeleting, setIsDeleting] = React.useState(false)
 
-  const onUpdate = () => {
-    const db = firebase.firestore()
-    db.collection('handleliste')
-      .doc(item.id)
-      .set({ ...item, name })
-  }
+  const handleChange = useCallback(async (e) => {
+    const newName = e.target.value
+    setName(newName)
+    
+    try {
+      // Only send the new name, don't touch any other fields
+      await setDoc(doc(db, 'handleliste', item.id), {
+        name: newName
+      }, { merge: true })
+    } catch (error) {
+      console.error('Error updating document: ', error)
+    }
+  }, [item])
 
-  const onDelete = () => {
-    const db = firebase.firestore()
-    db.collection('handleliste').doc(item.id).delete()
+  const onDelete = async () => {
+    try {
+      setIsDeleting(true)
+      const element = document.getElementById(`item-${item.id}`)
+      if (!element) return
+
+      // Start fade out animation
+      element.classList.add('removing')
+
+      // Wait for animation to almost complete before deleting
+      await new Promise(resolve => setTimeout(resolve, 280))
+      await deleteDoc(doc(db, 'handleliste', item.id))
+    } catch (error) {
+      console.error('Error deleting document: ', error)
+      setIsDeleting(false)
+    }
   }
 
   return (
-    <>
+    <div id={`item-${item.id}`} className={`item-container ${isDeleting ? 'removing' : ''}`}>
       <input
         className="shadow"
         value={name}
-        onChange={(e) => {
-          setName(e.target.value)
-        }}
+        onChange={handleChange}
+        style={{ opacity: isDeleting ? 0 : 1 }}
+        disabled={isDeleting}
       />
-
-      <button className="btnUpdate shadow" onClick={onUpdate}>
-        <span role="img" aria-label="refresh icon">
-          ⟳
-        </span>
+      <button 
+        className="btnDelete shadow" 
+        onClick={onDelete}
+        style={{ opacity: isDeleting ? 0 : 1 }}
+        disabled={isDeleting}
+      >
+        <span className="material-icons-round">delete</span>
       </button>
-      <button className="btnDelete shadow" onClick={onDelete}>
-        <span role="img" aria-label="delete icon">
-          ⌫
-        </span>
-      </button>
-    </>
+    </div>
   )
-}
-
-export const onDeleteAll = (e) => {
-  e.preventDefault()
-  if (window.confirm('Slette alt fra handlelista?')) {
-    const db = firebase.firestore()
-    db.collection('handleliste')
-      .get()
-      .then((res) => {
-        res.forEach((item) => {
-          item.ref.delete()
-        })
-      })
-  }
 }

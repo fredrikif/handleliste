@@ -1,61 +1,109 @@
 import React from 'react'
-import firebase from './firebase'
-import { ItemInput, onDeleteAll } from './ItemInput'
+import { ItemInput } from './ItemInput'
+import { 
+  getFirestore, 
+  collection, 
+  onSnapshot, 
+  doc, 
+  setDoc, 
+  query, 
+  orderBy,
+  serverTimestamp 
+} from 'firebase/firestore'
+
+const db = getFirestore()
 
 function Handleliste() {
   const [items, setItems] = React.useState([])
   const [newItemName, setNewItemName] = React.useState('')
+  const [error, setError] = React.useState(null)
 
   React.useEffect(() => {
-    const db = firebase.firestore()
-    return db.collection('handleliste').onSnapshot((snapshot) => {
-      const itemsData = []
-      snapshot.forEach((doc) => itemsData.push({ ...doc.data(), id: doc.id }))
-      setItems(itemsData)
-    })
+    console.log('Setting up Firestore listener...')
+    
+    try {
+      // Use single timestamp field for sorting
+      const q = query(
+        collection(db, 'handleliste'),
+        orderBy('timestamp', 'desc')
+      )
+
+      const unsubscribe = onSnapshot(q, 
+        (snapshot) => {
+          console.log(`Received ${snapshot.size} documents`)
+          const newItems = []
+          snapshot.forEach((doc) => {
+            const data = doc.data()
+            // Use timestamp or createdAt for backwards compatibility
+            const timeValue = data.timestamp || data.createdAt
+            newItems.push({
+              ...data,
+              id: doc.id,
+              timestamp: timeValue
+            })
+          })
+          setItems(newItems)
+          setError(null)
+        },
+        (err) => {
+          console.error('Firestore error:', err)
+          setError(err.message)
+        }
+      )
+
+      return () => unsubscribe()
+    } catch (err) {
+      console.error('Setup error:', err)
+      setError(err.message)
+    }
   }, [])
 
-  const onCreate = (e) => {
+  const createItem = async (e) => {
     e.preventDefault()
-    if (newItemName !== '') {
-      const db = firebase.firestore()
-      db.collection('handleliste').add({
+    if (!newItemName.trim()) return
+
+    const newItemRef = doc(collection(db, 'handleliste'))
+    
+    try {
+      // Use only timestamp field for new items
+      await setDoc(newItemRef, {
         name: newItemName,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        timestamp: serverTimestamp()
       })
       setNewItemName('')
+    } catch (error) {
+      console.error('Error adding document:', error)
     }
   }
 
   return (
     <div className="app-container">
       <h2 className="handlelisteHeading">F&M Handleliste</h2>
+      {error && (
+        <div style={{ color: 'red', margin: '1rem', textAlign: 'center' }}>
+          Error: {error}
+        </div>
+      )}
       <ul className="handleliste">
-        <form className="createItem" onSubmit={onCreate}>
+        <form className="createItem" onSubmit={createItem}>
           <input
-            className="shadow"
             value={newItemName}
             onChange={(e) => setNewItemName(e.target.value)}
+            placeholder="Legg til vare..."
+            enterKeyHint="done"
+            inputMode="text"
+            autoComplete="off"
           />
-          <button className="btnUpdate shadow" type="submit">
-            <span role="img" aria-label="bacon icon">
-              🥓
-            </span>
-          </button>
-          <button className="btnDelete shadow" onClick={onDeleteAll}>
-            <span role="img" aria-label="warning icon">
-              ⚠
-            </span>
+          <button className="btnAdd" type="submit">
+            <span className="material-icons-round">add</span>
           </button>
         </form>
 
-        {items
-          .sort((a, b) => b.timestamp - a.timestamp)
-          .map((item) => (
-            <li key={item.timestamp}>
-              <ItemInput item={item} />
-            </li>
-          ))}
+        {items.map((item) => (
+          <li key={item.id}>
+            <ItemInput item={item} />
+          </li>
+        ))}
       </ul>
     </div>
   )
