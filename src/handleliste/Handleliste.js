@@ -19,7 +19,7 @@ function Handleliste() {
   const [error, setError] = React.useState(null)
 
   React.useEffect(() => {
-    console.log('Setting up Firestore listener...')
+    //console.log('Setting up Firestore listener...')
     
     try {
       const q = query(
@@ -30,11 +30,11 @@ function Handleliste() {
 
       const unsubscribe = onSnapshot(q, 
         (snapshot) => {
-          console.log('Handleliste snapshot size:', snapshot.size) // Debug log
+          //console.log('Handleliste snapshot size:', snapshot.size) // Debug log
           const newItems = []
           snapshot.forEach((doc) => {
             const data = doc.data()
-            console.log('Handleliste document:', data) // Debug log
+            //console.log('Handleliste document:', data) // Debug log
             newItems.push({
               ...data,
               id: doc.id
