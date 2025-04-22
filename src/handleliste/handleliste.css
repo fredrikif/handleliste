@@ -130,8 +130,10 @@
   opacity: 1;
   color: #f0f0f0;
   transform: rotate(45deg);
+  /* 
   background: rgba(255, 23, 68, 0.15);
-  border: 2px solid #f0f0f0; /* Changed to white/gray */
+  */
+  border: 4px solid #fdfdfd; /* Changed to white/gray */
 }
 
 /* Add touch device specific styles */
@@ -160,6 +162,7 @@
 
   .item-container:hover .btnPin {
     opacity: 0.3;
+    
   }
 
   .item-container:hover .btnPin:hover {
@@ -176,38 +179,41 @@
   transform: rotate(0deg); /* Reset icon rotation */
 }
 
+/* 
 .btnPin.active .material-icons-round {
-  color: #ff1744;
-  transform: rotate(0deg); /* Keep icon straight while button rotates */
-  filter: drop-shadow(0 0 3px rgba(255, 23, 68, 0.4)); /* Stronger glow */
+  color: #ed4264;
+  transform: rotate(0deg); 
+  filter: drop-shadow(0 0 3px rgba(255, 23, 68, 0.4)); 
+  background: #fff;
 }
+*/
 
 .btnPin .material-icons-round {
   font-size: 1.35rem;
-  color: #ed4264; /* Subtle grey for unpinned */
+  color: #ed4264; 
   transition: color 0.3s ease;
 }
 
-.btnPin.active .material-icons-round {
-  color: #f0f0f0;
-}
+
 
 /* Pinned item container styling */
 .item-container.pinned {
+  /* 
   background: linear-gradient(to right, rgba(255, 23, 68, 0.08), transparent);
+  */
+  background: #ffd485;
   border: 2px solid #f0f0f0; /* Consistent white/gray border */
   box-shadow: 0 2px 8px rgba(255, 23, 68, 0.15);
 }
 
 /* Make pinned text more visible */
 .item-container.pinned input {
-  color: #f0f0f0; /* Dark text for better readability */
-  font-weight: 450;
+  color: #0a0a0a; /* Dark text for better readability */
+  font-weight: 600;
 }
 
 /* Hover effects for pinned items */
 .item-container.pinned:hover {
-  background: linear-gradient(to right, rgba(255, 23, 68, 0.12), transparent);
   border: 2px solid #f0f0f0; /* Keep same color on hover */
   box-shadow: 0 4px 12px rgba(255, 23, 68, 0.2);
 }
