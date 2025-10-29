@@ -1,48 +1,54 @@
-import React, { useCallback, useContext } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
-import { signInWithEmailAndPassword, getAuth } from 'firebase/auth'
-import { AuthContext } from './Auth'
+import React, { useState, useCallback } from 'react'
+import { useAuth } from './Auth'
+import { useNavigate } from 'react-router-dom'
 
-const Login = () => {
+export default function Login() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const { login } = useAuth()
   const navigate = useNavigate()
-  const auth = getAuth()
 
-  const handleLogin = useCallback(
-    async (event) => {
-      event.preventDefault()
-      const { email, password } = event.target.elements
-      try {
-        await signInWithEmailAndPassword(auth, email.value, password.value)
-        navigate('/')
-      } catch (error) {
-        alert(error.message)
-      }
-    },
-    [auth, navigate]
-  )
+  const handleLogin = useCallback(async (e) => {
+    e.preventDefault()
+    
+    // Basic validation
+    if (!email.trim() || !password.trim()) {
+      setError('Email and password are required')
+      return
+    }
 
-  const { currentUser } = useContext(AuthContext)
-
-  if (currentUser) {
-    return <Navigate to="/" replace />
-  }
+    try {
+      setError('')
+      await login(email.trim(), password.trim())
+      navigate('/')
+    } catch (error) {
+      setError(error.message)
+    }
+  }, [email, password, login, navigate])
 
   return (
-    <div className="app-content">
-      <h1>Log in</h1>
-      <form className="loginForm shadow" onSubmit={handleLogin}>
-        <label>
-          <input name="email" type="email" placeholder="Email" />
-        </label>
-        <label>
-          <input name="password" type="password" placeholder="Password" />
-        </label>
-        <button className="shadow" type="submit">
-          Log in
-        </button>
+    <div className="login-container">
+      <h2>Login</h2>
+      {error && <div className="error">{error}</div>}
+      <form onSubmit={handleLogin}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          minLength="6"
+        />
+        <button type="submit">Login</button>
       </form>
     </div>
   )
 }
-
-export default Login

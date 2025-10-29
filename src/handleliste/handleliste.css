@@ -179,15 +179,6 @@
   transform: rotate(0deg); /* Reset icon rotation */
 }
 
-/* 
-.btnPin.active .material-icons-round {
-  color: #ed4264;
-  transform: rotate(0deg); 
-  filter: drop-shadow(0 0 3px rgba(255, 23, 68, 0.4)); 
-  background: #fff;
-}
-*/
-
 .btnPin .material-icons-round {
   font-size: 1.35rem;
   color: #ed4264; 

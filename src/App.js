@@ -1,36 +1,49 @@
-import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
 import './App.css'
 import './handleliste/handleliste.css'
-import { AuthProvider } from './Auth'
-import Handleliste from './handleliste/Handleliste'
-import Login from './Login'
-import PrivateRoute from './PrivateRoute'
-import TodoList from './todo/TodoList'
 import { Navigation } from './components/Navigation'
+import Handleliste from './handleliste/Handleliste'
+import TodoList from './todo/TodoList'
+import Kindergarten from './kindergarten/Kindergarten'
+import { auth } from './handleliste/firebase'
+import { onAuthStateChanged } from 'firebase/auth'
+import Login from './Login'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import PrivateRoute from './PrivateRoute'
 
 function App() {
-  const [activePage, setActivePage] = React.useState('mat')
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [activePage, setActivePage] = useState('mat')
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user)
+      setLoading(false)
+    })
+    return unsubscribe
+  }, [])
+
+  if (loading) {
+    return <div className="app-container">Laster...</div>
+  }
 
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <div className="app-container">
-          <Navigation activePage={activePage} onNavigate={setActivePage} />
-          <Routes>
-            <Route 
-              path="/" 
-              element={
-                <PrivateRoute>
-                  {activePage === 'mat' ? <Handleliste /> : <TodoList />}
-                </PrivateRoute>
-              } 
-            />
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </AuthProvider>
+    <div className="app-container">
+      <Routes>
+        <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
+        <Route path="/" element={
+          <PrivateRoute>
+            <>
+              <Navigation activePage={activePage} onNavigate={setActivePage} />
+              {activePage === 'ymse' && <TodoList />}
+              {activePage === 'bhg' && <Kindergarten />}
+              {activePage === 'mat' && <Handleliste />}
+            </>
+          </PrivateRoute>
+        } />
+      </Routes>
+    </div>
   )
 }
 

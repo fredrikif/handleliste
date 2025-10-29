@@ -4,12 +4,8 @@ import { useAuth } from './Auth'
 
 const PrivateRoute = ({ children }) => {
   const { currentUser } = useAuth()
-
-  if (!currentUser) {
-    return <Navigate to="/login" replace />
-  }
-
-  return children
+  
+  return currentUser ? children : <Navigate to="/login" />
 }
 
 export default PrivateRoute

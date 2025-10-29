@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect, createContext } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 import { auth } from './handleliste/firebase'
-import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
+import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth'
 
 export const AuthContext = createContext()
 
@@ -8,67 +8,52 @@ export function useAuth() {
   return useContext(AuthContext)
 }
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null)
-  const [pending, setPending] = useState(true)
+  const [loading, setLoading] = useState(true)
+
+  const login = async (email, password) => {
+    // Basic email validation
+    if (!email || !email.includes('@')) {
+      throw new Error('Invalid email format')
+    }
+    
+    try {
+      return await signInWithEmailAndPassword(auth, email, password)
+    } catch (error) {
+      // Translate Firebase errors to user-friendly messages
+      let message = 'An error occurred during login'
+      if (error.code === 'auth/invalid-email') {
+        message = 'Please enter a valid email address'
+      } else if (error.code === 'auth/wrong-password') {
+        message = 'Incorrect password'
+      } else if (error.code === 'auth/user-not-found') {
+        message = 'No account found with this email'
+      }
+      throw new Error(message)
+    }
+  }
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user)
-      setPending(false)
+      setLoading(false)
     })
-
-    return () => unsubscribe()
+    return unsubscribe
   }, [])
 
   const value = {
     currentUser,
-    setCurrentUser,
-    pending,
-    setPending
+    login,
+    loading
   }
 
   return (
     <AuthContext.Provider value={value}>
-      {!pending && children}
+      {!loading && children}
     </AuthContext.Provider>
   )
 }
-
-const Auth = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
-  const handleLogin = async (e) => {
-    e.preventDefault()
-    try {
-      await signInWithEmailAndPassword(auth, email, password)
-      console.log('Logged in successfully')
-    } catch (error) {
-      console.error('Error logging in: ', error)
-    }
-  }
-
-  return (
-    <form onSubmit={handleLogin}>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button type="submit">Login</button>
-    </form>
-  )
-}
-
-export default Auth
 
 
 

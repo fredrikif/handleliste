@@ -15,6 +15,12 @@ export const Navigation = ({ activePage, onNavigate }) => {
       >
         Mat
       </button>
+      <button 
+        className={`nav-button ${activePage === 'bhg' ? 'active' : ''}`}
+        onClick={() => onNavigate('bhg')}
+      >
+        Bhg
+      </button>
     </nav>
   )
 }

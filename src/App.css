@@ -3,6 +3,15 @@ html {
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
+.app-container {
+  min-height: 100vh;
+  padding: 1rem;
+  background: linear-gradient(45deg, #ed4264, #ffedbc);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .app-content {
   max-width: 800px;
   margin: 2rem auto;
@@ -11,37 +20,48 @@ html {
 }
 
 .login-container {
-  max-width: 400px;
-  margin: 100px auto;
-  padding: 2rem;
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 3rem;
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.login-container h2 {
+  margin-bottom: 2rem;
+  color: #ed4264;
+  font-size: 1.5rem;
 }
 
 .login-container form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
+  width: 100%;
 }
 
 .login-container input {
+  width: 100%;
+  box-sizing: border-box;
   padding: 0.75rem;
   border: 2px solid #e2e8f0;
   border-radius: 8px;
-  width: 100%;
   font-size: 1rem;
   transition: border-color 0.2s ease;
 }
 
 .login-container input:focus {
-  border-color: #4299e1;
+  border-color: #ed4264;
   outline: none;
 }
 
 .login-container button {
   padding: 0.75rem;
-  background-color: #4299e1;
+  background-color: #ed4264;
   color: white;
   border: none;
   border-radius: 8px;
@@ -52,10 +72,11 @@ html {
 }
 
 .login-container button:hover {
-  background-color: #3182ce;
+  background-color: #dc2954;
 }
 
 .error {
-  color: red;
-  margin-bottom: 10px;
+  color: #dc2954;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
 }
