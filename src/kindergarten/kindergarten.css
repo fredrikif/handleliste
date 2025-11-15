@@ -5,12 +5,12 @@
 }
 
 .day-schedule {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 /* Day header using nav-button style */
 .day-header {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   border: none;
   border-radius: 8px;
   background: white;
@@ -18,18 +18,18 @@
   font-size: 1.25rem;
   font-weight: 600;
   opacity: 0.85;
-  margin-bottom: 0.5rem;
+  margin-bottom: 4px;
   width: fit-content;  /* Changed from auto to fit-content */
 }
 
 .schedule-row {
   display: flex;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 4px;
   gap: 1rem;
   background: white;
   opacity: 0.85;
-  padding: 0.75rem;
+  padding: 0.5rem;
   border-radius: 12px;
 }
 
@@ -48,7 +48,7 @@
 }
 
 .toggle-button {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   border: 2px solid transparent;  /* Add transparent border by default */
   border-radius: 8px;
   background: white;
@@ -84,10 +84,6 @@
   .schedule-row {
     flex-direction: column;
     align-items: stretch;
-  }
-
-  .schedule-label {
-    margin-bottom: 0.5rem;
   }
 
   .toggle-group {
