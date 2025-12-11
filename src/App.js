@@ -5,6 +5,7 @@ import { Navigation } from './components/Navigation'
 import Handleliste from './handleliste/Handleliste'
 import TodoList from './todo/TodoList'
 import Kindergarten from './kindergarten/Kindergarten'
+import ShowQR from './qr/ShowQR'
 import { auth } from './handleliste/firebase'
 import { onAuthStateChanged } from 'firebase/auth'
 import Login from './Login'
@@ -38,6 +39,7 @@ function App() {
               <Navigation activePage={activePage} onNavigate={setActivePage} />
               {activePage === 'ymse' && <TodoList />}
               {activePage === 'bhg' && <Kindergarten />}
+              {activePage === 'qr' && <ShowQR />}
               {activePage === 'mat' && <Handleliste />}
             </>
           </PrivateRoute>

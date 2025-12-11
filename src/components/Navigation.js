@@ -21,6 +21,12 @@ export const Navigation = ({ activePage, onNavigate }) => {
       >
         Bhg
       </button>
+      <button 
+        className={`nav-button ${activePage === 'qr' ? 'active' : ''}`}
+        onClick={() => onNavigate('qr')}
+      >
+        QR
+      </button>
     </nav>
   )
 }
